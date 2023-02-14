@@ -1,3 +1,3 @@
 # KFC
 CS class-work
-By icey
+By Icey Lili and Jerry
