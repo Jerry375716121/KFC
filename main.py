@@ -69,7 +69,7 @@ def Show_Ready_list():
         print(i)
 
 
-def GetOrderID():  # 随机生成取餐码
+def GetOrderID():  # 按照顺序生成取餐码
     return
 
 
