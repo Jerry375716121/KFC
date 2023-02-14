@@ -55,6 +55,12 @@ class Preparing:
 Preparing_list = Preparing()
 Ready_list = []
 
+def set_menu():     #menu初始化和print
+    menu = [['hamburger', 20], ['milk tea', 25], ['cola', 8], ['fresh-made salad', 7], ['vanilla frosty', 10], ['large fries', 15], ['middle fries', 12]]
+    print('MENU')
+    for i in range(len(menu)):
+            print(i+1,'.',menu[i][0],'  $',menu[i][1])
+    return menu
 
 def Show_Ready_list():
     for i in Ready_list:
