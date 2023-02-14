@@ -3,6 +3,7 @@ class Order:
         self.OrderID = OrderID
         self.next = None
 
+
 class Preparing:
     def __init__(self) -> None:
         self.head = None
@@ -23,9 +24,9 @@ class Preparing:
                 temp = temp.next
 
         if found == True:
-            print('Found')
+            return True
         else:
-            print('Not found')
+            return False
 
     def insert(self, value):
         new_node = Order(value)
@@ -50,8 +51,28 @@ class Preparing:
                 pre = now
                 now = now.next
 
-Preparing_list=Preparing()
+
+Preparing_list = Preparing()
+Ready_list = []
 
 
-def GetOrderID():  #随机生成取餐码
-    return 
+def Show_Ready_list():
+    for i in Ready_list:
+        print(i)
+
+
+def GetOrderID():  # 随机生成取餐码
+    return
+
+
+def Ordering():  # 用户点餐
+    return
+
+
+def Transfer_to_Ready(order_id):  # 制作完成，通知取餐
+    if Preparing_list.search(order_id) == True:
+        Ready_list.append(order_id)
+        Preparing_list.delete(order_id)
+        Show_Ready_list()
+    else:
+        print('This ID is not in the Preparing_list')
