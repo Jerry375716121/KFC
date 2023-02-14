@@ -56,13 +56,12 @@ Preparing_list = Preparing()
 Ready_list = []
 
 #生成menu+printout
-def set_menu(): 
+def set_menu():
     menu = [['hamburger', 20], ['milk tea', 25], ['cola', 8], ['fresh-made salad', 7], ['vanilla frosty', 10], ['large fries', 15], ['middle fries', 12]]
-    print('MENU'.center(50))
+    print('✿ MENU'.rjust(25),'✿')
     for i in range(len(menu)):
             print(i+1,'',menu[i][0].ljust(20),'  $'.rjust(20), menu[i][1])
     return menu
-
 set_menu()
 
 
