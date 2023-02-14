@@ -82,8 +82,23 @@ def get_total_price(food_arr): #计算总价
     return total
 
 
-def Ordering():  # 用户点餐
-    return
+def Ordering():  # 用户点餐--
+    set_menu(menu)
+    sum_price = 0
+    order_food_arr = []
+    want = input('Do you want to order something? (yes or no):')
+    if want == 'yes':
+        order_food=(input('please choose your meal(by entering the serial number):'))
+        for content in order_food:
+            if content.isnumeric():
+                if int(content) <= 7:
+                    order_food_arr.append(int(content))
+                else:
+                    print('OUT OF RANGE')
+    else:
+        print('Thank you for using the system')
+    print(order_food_arr)
+    print(get_total_price(order_food_arr))
 
 
 def Transfer_to_Ready(order_id):  # 制作完成，通知取餐
