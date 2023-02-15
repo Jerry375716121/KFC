@@ -28,12 +28,12 @@ class Preparing:
         else:
             return False
 
-    def insert(self, value):#记得修bug
+    def insert(self, value):  # 记得修bug
         new_node = Order(value)
         new_node.next = self.head
         self.head = new_node
 
-    def mid_insert(self, value): #中间插入，实现插队效果
+    def mid_insert(self, value):  # 中间插入，实现插队效果
         new_node = Order(value)
 
         return
@@ -59,12 +59,12 @@ class Preparing:
 
 Preparing_list = Preparing()
 Ready_list = []
-menu = [['Hamburger', 20], 
-        ['Milk Tea', 25], 
-        ['Cola', 8], 
-        ['Fresh-Made Salad',7], 
-        ['Vanilla Frosty', 10], 
-        ['Large Fries', 15], 
+menu = [['Hamburger', 20],
+        ['Milk Tea', 25],
+        ['Cola', 8],
+        ['Fresh-Made Salad', 7],
+        ['Vanilla Frosty', 10],
+        ['Large Fries', 15],
         ['Middle Fries', 12]]
 
 
@@ -108,7 +108,6 @@ def Cut_in(orders, ID):  # 插队
 def Ordering():  # 用户点餐
     set_menu(menu)
     ID = GetOrderID()
-    sum_price = 0
     order_food_arr = []
     want = input('Do you want to order something? (yes or no):')
     if want == 'yes':
