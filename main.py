@@ -86,7 +86,6 @@ def GetOrderID():  # 按照顺序生成取餐码
 
 def get_total_price(food_arr):  # 计算总价
     total = 0
-    found = False
     for num in food_arr:
         index = int(num)
         total += menu[index][2]
