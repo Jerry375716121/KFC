@@ -103,7 +103,14 @@ def Cut_in(orders, ID):  # 插队
         print('OK, total price is:')
         Preparing_list.insert(ID)
         return get_total_price(orders)
-
+    
+    
+def update_dic(code, order_arr): 
+    order_dic = {}
+    food_list = []
+    for i in range(order_arr):
+        food_list.append(menu[i][0])
+    order_dic[code] = food_list
 
 def Ordering():  # 用户点餐
     set_menu(menu)
