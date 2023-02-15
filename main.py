@@ -82,8 +82,22 @@ def get_total_price(food_arr): #计算总价
     return total
 
 
+def Cut_in(orders,ID): #插队
+    flag=input('Do you want to pay 10% more to cut into the queue? \nY for yes N for no\n')
+    if flag=='Y':
+        print('You have been moved forward\nTotal price is:')
+
+
+
+        return get_total_price(orders)*1.1
+    elif flag=='N':
+        print('OK, total price is:')
+        Preparing_list.insert(ID)
+        return get_total_price(orders)
+
 def Ordering():  # 用户点餐--
     set_menu(menu)
+    ID=GetOrderID()
     sum_price = 0
     order_food_arr = []
     want = input('Do you want to order something? (yes or no):')
@@ -98,7 +112,7 @@ def Ordering():  # 用户点餐--
     else:
         print('Thank you for using the system')
     print(order_food_arr)
-    print(get_total_price(order_food_arr))
+    print('Total price is:',Cut_in(order_food_arr,ID))
 
 
 def Transfer_to_Ready(order_id):  # 制作完成，通知取餐
