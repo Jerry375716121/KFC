@@ -59,8 +59,13 @@ class Preparing:
 
 Preparing_list = Preparing()
 Ready_list = []
-menu = [['Hamburger', 20], ['Milk Tea', 25], ['Cola', 8], ['Fresh-Made Salad',
-                                                           7], ['Vanilla Frosty', 10], ['Large Fries', 15], ['Middle Fries', 12]]
+menu = [['Hamburger', 20], 
+        ['Milk Tea', 25], 
+        ['Cola', 8], 
+        ['Fresh-Made Salad',7], 
+        ['Vanilla Frosty', 10], 
+        ['Large Fries', 15], 
+        ['Middle Fries', 12]]
 
 
 def set_menu():  # 生成menu
