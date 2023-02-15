@@ -132,3 +132,5 @@ def Transfer_to_Ready(order_id):  # 制作完成，通知取餐
         Show_Ready_list()
     else:
         print('This ID is not in the Preparing_list')
+
+        
