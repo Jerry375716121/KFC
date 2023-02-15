@@ -106,7 +106,7 @@ def Cut_in(orders, ID):  # 插队
         return get_total_price(orders)
 
 
-def Ordering():  # 用户点餐--
+def Ordering():  # 用户点餐
     set_menu(menu)
     ID = GetOrderID()
     sum_price = 0
