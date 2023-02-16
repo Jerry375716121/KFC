@@ -141,7 +141,7 @@ def Ordering():  # 用户点餐
     want = input('Do you want to order something? (yes or no):')
     if want == 'yes':
         order_food = (
-            input('please choose your meal(by entering the serial number):'))
+            input('please choose your meal by entering the serial number\n'))
         for content in order_food:
             if content.isnumeric():
                 if int(content) <= 7:
@@ -161,3 +161,9 @@ def Transfer_to_Ready(order_id):  # 制作完成，通知取餐
         Show_Ready_list()
     else:
         print('This ID is not in the Preparing_list')
+
+
+def main():
+    user_type = input('Input 1 if you are a customer, 2 if you are a worker')
+    if user_type == '1':
+        Ordering()
