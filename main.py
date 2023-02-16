@@ -87,7 +87,7 @@ menu = [['Hamburger', 20],
         ['Middle Fries', 12]]
 
 
-def set_menu():  # 生成menu
+def set_menu(menu):  # 生成menu
     print('✿ MENU'.rjust(25), '✿')
     for i in range(len(menu)):
         print(i+1, '', menu[i][0].ljust(20), '  $'.rjust(20), menu[i][1])
@@ -109,7 +109,7 @@ def get_total_price(food_arr):  # 计算总价
     total = 0
     for num in food_arr:
         index = int(num)
-        total += menu[index][2]
+        total += menu[index][1]
     return total
 
 
@@ -117,7 +117,7 @@ def Cut_in(orders, ID):  # 插队
     flag = input(
         'Do you want to pay 10% more to cut into the queue? \nY for yes N for no\n')
     if flag == 'Y':
-        print('You have been moved forward\nTotal price is:')
+        print('You have been moved forward')
         Preparing_list.mid_insert(ID)
         return get_total_price(orders)*1.1
     elif flag == 'N':
@@ -148,10 +148,11 @@ def Ordering():  # 用户点餐
                     order_food_arr.append(int(content))
                 else:
                     print('OUT OF RANGE')
+        print(order_food_arr)
+        print('Total price is:', Cut_in(order_food_arr, ID))
     else:
         print('Thank you for using the system')
-    print(order_food_arr)
-    print('Total price is:', Cut_in(order_food_arr, ID))
+
 
 
 def Transfer_to_Ready(order_id):  # 制作完成，通知取餐
@@ -164,11 +165,19 @@ def Transfer_to_Ready(order_id):  # 制作完成，通知取餐
 
 
 def main():
-    user_type = input('Input 1 if you are a customer, 2 if you are a worker')
+    print('The food in processing:')
+    Preparing.print_list()
+    print('The food is ready:')
+    Show_Ready_list()
+    user_type = input('Input 1 if you are a customer, 2 if you are a worker:')
     if user_type == '1':
         Ordering()
+        main()
     elif user_type == '2':
         Transfer_to_Ready(
             int(input('Input the order_id that is ready for serve:\n')))
+        main()
     else:
         main()
+
+main()
