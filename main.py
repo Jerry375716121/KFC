@@ -77,6 +77,7 @@ class Preparing:
 
 Preparing_list = Preparing()
 Ready_list = []
+OrderID = 0000
 menu = [['Hamburger', 20],
         ['Milk Tea', 25],
         ['Cola', 8],
@@ -99,7 +100,9 @@ def Show_Ready_list():
 
 
 def GetOrderID():  # 按照顺序生成取餐码
-    return
+    global OrderID
+    OrderID += 1
+    return OrderID
 
 
 def get_total_price(food_arr):  # 计算总价
