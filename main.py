@@ -11,7 +11,7 @@ class Preparing:
     def print_list(self):
         temp = self.head
         while temp:
-            print(temp.OrderID)
+            print(str(temp.OrderID).zfill(4))
             temp = temp.next
 
     def search(self, item):
@@ -62,7 +62,7 @@ class Preparing:
         pre = now
         found = False
         while now and not found:
-            if now.data == item:
+            if now.OrderID == item:
                 found = True
                 if now != self.head:
                     pre.next = now.next
@@ -96,7 +96,7 @@ def set_menu(menu):  # 生成menu
 
 def Show_Ready_list():
     for i in Ready_list:
-        print(i)
+        print(str(i).zfill(4))
 
 
 def GetOrderID():  # 按照顺序生成取餐码
