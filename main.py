@@ -30,8 +30,14 @@ class Preparing:
 
     def insert(self, value):    # 记得修bug
         new_node = Order(value)
-        new_node.next = self.head
-        self.head = new_node
+        if self.head is None:
+            self.head = new_node
+        else:
+            temp=self.head
+            while temp:
+                pre=temp
+                temp=temp.next
+            pre.next=new_node
 
     def mid_insert(self, value):  # 中间插入，实现插队效果
         new_node = Order(value)
