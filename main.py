@@ -154,7 +154,6 @@ def Ordering():  # 用户点餐
         print('Thank you for using the system')
 
 
-
 def Transfer_to_Ready(order_id):  # 制作完成，通知取餐
     if Preparing_list.search(order_id) == True:
         Ready_list.append(order_id)
@@ -166,7 +165,7 @@ def Transfer_to_Ready(order_id):  # 制作完成，通知取餐
 
 def main():
     print('The food in processing:')
-    Preparing.print_list()
+    Preparing_list.print_list()
     print('The food is ready:')
     Show_Ready_list()
     user_type = input('Input 1 if you are a customer, 2 if you are a worker:')
@@ -179,5 +178,6 @@ def main():
         main()
     else:
         main()
+
 
 main()
