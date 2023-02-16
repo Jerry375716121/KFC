@@ -28,7 +28,7 @@ class Preparing:
         else:
             return False
 
-    def insert(self, value):    # 记得修bug
+    def insert(self, value):    
         new_node = Order(value)
         if self.head is None:
             self.head = new_node
