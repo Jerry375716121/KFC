@@ -28,21 +28,34 @@ class Preparing:
         else:
             return False
 
-    def insert(self, value):    
+    def insert(self, value):
         new_node = Order(value)
         if self.head is None:
             self.head = new_node
         else:
-            temp=self.head
+            temp = self.head
             while temp:
-                pre=temp
-                temp=temp.next
-            pre.next=new_node
+                pre = temp
+                temp = temp.next
+            pre.next = new_node
 
     def mid_insert(self, value):  # 中间插入，实现插队效果
         new_node = Order(value)
-
-        return
+        if self.head is None:
+            self.insert(value)
+        else:
+            temp = self.head
+            counter = 0
+            while temp:
+                counter += 1
+                temp = temp.next
+            mid = int(counter/2)
+            temp = self.head
+            for i in range(mid-1):
+                temp = temp.next
+            temp1 = temp.next
+            temp.next = new_node
+            new_node.next = temp1
 
     def delete(self, item):
         now = self.head
@@ -57,7 +70,6 @@ class Preparing:
                 else:
                     self.head = self.head.next
                     now = None
-
             else:
                 pre = now
                 now = now.next
@@ -103,20 +115,21 @@ def Cut_in(orders, ID):  # 插队
         'Do you want to pay 10% more to cut into the queue? \nY for yes N for no\n')
     if flag == 'Y':
         print('You have been moved forward\nTotal price is:')
-
+        Preparing_list.mid_insert(ID)
         return get_total_price(orders)*1.1
     elif flag == 'N':
         print('OK, total price is:')
         Preparing_list.insert(ID)
         return get_total_price(orders)
-    
-    
-def update_dic(code, order_arr): 
+
+
+def update_dic(code, order_arr):
     order_dic = {}
     food_list = []
     for i in range(order_arr):
         food_list.append(menu[i][0])
     order_dic[code] = food_list
+
 
 def Ordering():  # 用户点餐
     set_menu(menu)
@@ -145,5 +158,3 @@ def Transfer_to_Ready(order_id):  # 制作完成，通知取餐
         Show_Ready_list()
     else:
         print('This ID is not in the Preparing_list')
-
-        
