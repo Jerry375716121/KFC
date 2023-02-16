@@ -1,2 +1,2 @@
 # KFC
-CS class-work By Icey Lili and Jerry
+CS class-work By Icey Lily and Jerry
