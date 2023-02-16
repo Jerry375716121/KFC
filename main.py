@@ -167,3 +167,8 @@ def main():
     user_type = input('Input 1 if you are a customer, 2 if you are a worker')
     if user_type == '1':
         Ordering()
+    elif user_type == '2':
+        Transfer_to_Ready(
+            int(input('Input the order_id that is ready for serve:\n')))
+    else:
+        main()
