@@ -137,7 +137,9 @@ def update_dic(code, order_arr):
 def Ordering():  # 用户点餐
     set_menu(menu)
     ID = GetOrderID()
+    order_serial_arr = []
     order_food_arr = []
+    is_change = True
     want = input('Do you want to order something? (yes or no):')
     if want == 'yes':
         order_food = (
@@ -145,11 +147,47 @@ def Ordering():  # 用户点餐
         for content in order_food:
             if content.isnumeric():
                 if int(content) <= 7:
-                    order_food_arr.append(int(content))
+                    order_serial_arr.append(int(content))
                 else:
                     print('OUT OF RANGE')
-        print(order_food_arr)
-        print('Total price is:', Cut_in(order_food_arr, ID))
+        for i in order_serial_arr:
+            order_food_arr.append(menu[i - 1][0])
+        print('please check the orders:', order_food_arr)
+        change = input('Do you want to change anything(yes or no)?')
+        while is_change:
+            if change == 'yes':
+                how_change = input('Add food or reduce food? (add or reduce):')
+                if how_change == 'add':
+                    change_serial = (
+                        input('Please enter the additions here:'))
+                    for content in change_serial:
+                        if content.isnumeric():
+                            if int(content) <= 7:
+                                order_serial_arr.append(int(content))
+                            else:
+                                print('OUT OF RANGE')
+                    for i in order_serial_arr:
+                        order_food_arr.append(menu[i-1][0])
+                elif how_change == 'reduce':
+                    change_serial = (
+                        input('Please enter the serial number of the reduces here:'))
+                    for content in change_serial:
+                        order_food_arr = []
+                        if content.isnumeric():
+                            if int(content) <= 7:
+                                order_serial_arr.remove(int(content))
+                                for i in order_serial_arr:
+                                    order_food_arr.append(menu[i - 1][0])
+                        else:
+                            print('OUT OF RANGE')
+                else:
+                    print('Error exists')
+            print('The updated food list is:', order_food_arr)
+            want_change = input('Do you want to do further change(yes or no)?')
+            if want_change =='no':
+                is_change = False
+        print(':', order_food_arr)
+        print('Total price is:', Cut_in(order_serial_arr, ID))
     else:
         print('Thank you for using the system')
 
