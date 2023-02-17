@@ -180,7 +180,7 @@ def Ordering():  # 用户点餐
                 else:
                     print('Error exists')
                 print('The updated food list is:', order_food_arr)
-            want_change = input('No further change?(yes or no)')
+            want_change = input('No change?(yes or no)')
             if want_change =='no':
                 is_change = False
         print('Total price is:', Cut_in(order_serial_arr, ID))
