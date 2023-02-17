@@ -1,4 +1,6 @@
 import pprint as ppt
+
+
 class Order:
     def __init__(self, OrderID) -> None:
         self.OrderID = OrderID
@@ -125,8 +127,13 @@ def Cut_in(orders, ID):  # 插队
         print('OK, total price is:')
         Preparing_list.insert(ID)
         return get_total_price(orders)
+    else:
+        Cut_in(orders, ID)
+
 
 order_dic = {}
+
+
 def update_dic(code, order_arr):
     order_dic[code] = order_arr
 
@@ -181,12 +188,13 @@ def Ordering():  # 用户点餐
                     print('Error exists')
                 print('The updated food list is:', order_food_arr)
             want_change = input('No change?(yes or no)')
-            if want_change =='no':
+            if want_change == 'no':
                 is_change = False
         print('Total price is:', Cut_in(order_serial_arr, ID))
     else:
         print('Thank you for using the system')
     update_dic(ID, order_food_arr)
+
 
 def Transfer_to_Ready(order_id):  # 制作完成，通知取餐
     if Preparing_list.search(order_id) == True:
