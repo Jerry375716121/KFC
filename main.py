@@ -112,7 +112,7 @@ def get_total_price(food_arr):  # 计算总价
     total = 0
     for num in food_arr:
         index = int(num)
-        total += menu[index][1]
+        total += menu[index-1][1]
     return total
 
 
@@ -128,7 +128,7 @@ def Cut_in(orders, ID):  # 插队 (bug maybe)
         Preparing_list.insert(ID)
         return get_total_price(orders)
     else:
-        Cut_in(orders, ID)
+        return Cut_in(orders, ID)
 
 
 order_dic = {}
@@ -190,7 +190,8 @@ def Ordering():  # 用户点餐
             want_change = input('No change?(yes or no)')
             if want_change == 'no':
                 is_change = False
-        print('Total price is:', Cut_in(order_serial_arr, ID))
+        print('Total price is:', '%.2f' %
+              round(Cut_in(order_serial_arr, ID), 2))
     else:
         print('Thank you for using the system')
     update_dic(ID, order_food_arr)
