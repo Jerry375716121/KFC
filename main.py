@@ -116,7 +116,7 @@ def get_total_price(food_arr):  # 计算总价
     return total
 
 
-def Cut_in(orders, ID):  # 插队
+def Cut_in(orders, ID):  # 插队 (bug maybe)
     flag = input(
         'Do you want to pay 10% more to cut into the queue? \nY for yes N for no\n')
     if flag == 'Y':
