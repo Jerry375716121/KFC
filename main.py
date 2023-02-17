@@ -1,3 +1,4 @@
+import pprint as ppt
 class Order:
     def __init__(self, OrderID) -> None:
         self.OrderID = OrderID
@@ -125,13 +126,9 @@ def Cut_in(orders, ID):  # 插队
         Preparing_list.insert(ID)
         return get_total_price(orders)
 
-
+order_dic = {}
 def update_dic(code, order_arr):
-    order_dic = {}
-    food_list = []
-    for i in range(order_arr):
-        food_list.append(menu[i][0])
-    order_dic[code] = food_list
+    order_dic[code] = order_arr
 
 
 def Ordering():  # 用户点餐
@@ -182,15 +179,14 @@ def Ordering():  # 用户点餐
                             print('OUT OF RANGE')
                 else:
                     print('Error exists')
-            print('The updated food list is:', order_food_arr)
-            want_change = input('Do you want to do further change(yes or no)?')
+                print('The updated food list is:', order_food_arr)
+            want_change = input('No further change?(yes or no)')
             if want_change =='no':
                 is_change = False
-        print(':', order_food_arr)
         print('Total price is:', Cut_in(order_serial_arr, ID))
     else:
         print('Thank you for using the system')
-
+    update_dic(ID, order_food_arr)
 
 def Transfer_to_Ready(order_id):  # 制作完成，通知取餐
     if Preparing_list.search(order_id) == True:
@@ -211,8 +207,13 @@ def main():
         Ordering()
         main()
     elif user_type == '2':
-        Transfer_to_Ready(
-            int(input('Input the order_id that is ready for serve:\n')))
+        print('The pick-up code in processing is:')
+        ppt.pprint(order_dic)
+        ID = int(input('Input the order_id that is ready for serve:\n'))
+        Transfer_to_Ready(ID)
+        del order_dic[ID]
+        print('The updated pick-up code in processing is:')
+        ppt.pprint(order_dic)
         main()
     else:
         main()
