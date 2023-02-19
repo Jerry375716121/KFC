@@ -26,7 +26,7 @@ class Preparing:
             else:
                 temp = temp.next
 
-        if found == True:
+        if found:
             return True
         else:
             return False
