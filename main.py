@@ -1,3 +1,7 @@
+import pprint as ppt
+import pyinputplus as pyip
+
+
 class Order:
     def __init__(self, OrderID) -> None:
         self.OrderID = OrderID
@@ -23,7 +27,7 @@ class Preparing:
             else:
                 temp = temp.next
 
-        if found == True:
+        if found:
             return True
         else:
             return False
@@ -109,49 +113,113 @@ def get_total_price(food_arr):  # 计算总价
     total = 0
     for num in food_arr:
         index = int(num)
-        total += menu[index][1]
+        total += menu[index-1][1]
     return total
 
 
-def Cut_in(orders, ID):  # 插队
-    flag = input(
-        'Do you want to pay 10% more to cut into the queue? \nY for yes N for no\n')
-    if flag == 'Y':
+def Cut_in(orders, ID):  # 插队 (bug maybe)
+    flag = pyip.inputMenu(['yes', 'no'],
+                          'Do you want to pay 10% more to cut into the queue?\n')
+    if flag == 'yes':
         print('You have been moved forward')
         Preparing_list.mid_insert(ID)
         return get_total_price(orders)*1.1
-    elif flag == 'N':
+    elif flag == 'no':
         print('OK, total price is:')
         Preparing_list.insert(ID)
         return get_total_price(orders)
 
 
-def update_dic(code, order_arr):
-    order_dic = {}
-    food_list = []
-    for i in range(order_arr):
-        food_list.append(menu[i][0])
-    order_dic[code] = food_list
+order_dic = {}
+
+
+def update_dic(dic, key, value):
+    dic[key] = value
 
 
 def Ordering():  # 用户点餐
     set_menu(menu)
     ID = GetOrderID()
+    order_serial_arr = []
     order_food_arr = []
-    want = input('Do you want to order something? (yes or no):')
+    is_change = True
+    want = pyip.inputMenu(
+        ['yes', 'no'], 'Do you want to order something?\n', lettered=True)
     if want == 'yes':
         order_food = (
-            input('please choose your meal by entering the serial number\n'))
+            input('please choose your meal by entering the serial numbers\n'))
         for content in order_food:
             if content.isnumeric():
                 if int(content) <= 7:
-                    order_food_arr.append(int(content))
+                    order_serial_arr.append(int(content))
                 else:
                     print('OUT OF RANGE')
-        print(order_food_arr)
-        print('Total price is:', Cut_in(order_food_arr, ID))
+        for i in order_serial_arr:
+            order_food_arr.append(menu[i - 1][0])
+        print('please check the orders:')
+        order_instant_dic = {}
+        for food in order_food_arr:
+            if food in order_instant_dic:
+                order_instant_dic[food] += 1
+            else:
+                update_dic(order_instant_dic, food, 1)
+        ppt.pprint(order_instant_dic)
+        change = pyip.inputMenu(
+            ['yes', 'no'], 'Do you want to change anything?\n', lettered=True)
+        while is_change:
+            if change == 'yes':
+                how_change = pyip.inputMenu(
+                    ['add', 'reduce'], 'Add food or reduce food?\n', lettered=True)
+                if how_change == 'add':
+                    change_serial = (
+                        input('Please enter the additions here:'))
+                    for content in change_serial:
+                        order_food_arr = []
+                        if content.isnumeric():
+                            if int(content) <= 7:
+                                order_serial_arr.append(int(content))
+                                print('___', content, 'is added')
+                            else:
+                                print('OUT OF RANGE')
+                    for i in order_serial_arr:
+                        order_food_arr.append(menu[i-1][0])
+                elif how_change == 'reduce':
+                    change_serial = (
+                        input('Please enter the serial number of the reduces here:'))
+                    for content in change_serial:
+                        if int(content) not in order_serial_arr:
+                            print('___', content, 'is not in the list')
+                        else:
+                            order_food_arr = []
+                            if content.isnumeric():
+                                if int(content) <= 7:
+                                    order_serial_arr.remove(int(content))
+                                    print('___', content, 'is removed')
+                                    for i in order_serial_arr:
+                                        order_food_arr.append(menu[i - 1][0])
+                                        print('order_food_arr')
+                                else:
+                                    print('OUT OF RANGE')
+                else:
+                    print('Error exists')
+                print('The updated food list is:')
+                order_instant_dic = {}
+                for food in order_food_arr:
+                    if food in order_instant_dic:
+                        order_instant_dic[food] += 1
+                    else:
+                        update_dic(order_instant_dic, food, 1)
+                ppt.pprint(order_instant_dic)
+            want_change = pyip.inputMenu(['yes', 'no'], 'No change?\n')
+            if want_change == 'no':
+                is_change = False
+            elif want_change == "yes":
+                change = "yes"
+        print('Total price is: $', '%.2f' %
+              round(Cut_in(order_serial_arr, ID), 2))
     else:
         print('Thank you for using the system')
+    update_dic(order_dic, ID, order_food_arr)
 
 
 def Transfer_to_Ready(order_id):  # 制作完成，通知取餐
@@ -168,13 +236,19 @@ def main():
     Preparing_list.print_list()
     print('The food is ready:')
     Show_Ready_list()
-    user_type = input('Input 1 if you are a customer, 2 if you are a worker:')
-    if user_type == '1':
+    user_type = pyip.inputMenu(
+        ['worker', 'customer'], 'Hello, you are?\n', lettered=True)
+    if user_type == 'customer':
         Ordering()
         main()
-    elif user_type == '2':
-        Transfer_to_Ready(
-            int(input('Input the order_id that is ready for serve:\n')))
+    elif user_type == 'worker':
+        print('The pick-up code in processing is:')
+        ppt.pprint(order_dic)
+        ID = int(input('Input the order_id that is ready for serve:\n'))
+        Transfer_to_Ready(ID)
+        del order_dic[ID]
+        print('The updated pick-up code in processing is:')
+        ppt.pprint(order_dic)
         main()
     else:
         main()
