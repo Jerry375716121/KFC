@@ -1,8 +1,6 @@
 import pprint as ppt
 import pyinputplus as pyip
 import pickle
-
-
 class Order:
     def __init__(self, OrderID) -> None:
         self.OrderID = OrderID
@@ -28,7 +26,7 @@ class Preparing:
             else:
                 temp = temp.next
 
-        if found:
+        if found == True:
             return True
         else:
             return False
@@ -120,7 +118,7 @@ def get_total_price(food_arr):  # 计算总价
 
 def Cut_in(orders, ID):  # 插队 (bug maybe)
     flag = pyip.inputMenu(['yes', 'no'],
-                          'Do you want to pay 10% more to cut into the queue?\n')
+        'Do you want to pay 10% more to cut into the queue?\n')
     if flag == 'yes':
         print('You have been moved forward')
         Preparing_list.mid_insert(ID)
@@ -129,6 +127,8 @@ def Cut_in(orders, ID):  # 插队 (bug maybe)
         print('OK, total price is:')
         Preparing_list.insert(ID)
         return get_total_price(orders)
+    else:
+        return Cut_in(orders, ID)
 
 
 order_dic = {}
@@ -140,13 +140,12 @@ def update_dic(dic, key, value):
 
 def Ordering():  # 用户点餐
     set_menu(menu)
-    ID = GetOrderID()
     order_serial_arr = []
     order_food_arr = []
     is_change = True
-    want = pyip.inputMenu(
-        ['yes', 'no'], 'Do you want to order something?\n', lettered=True)
+    want = pyip.inputMenu(['yes', 'no'], 'Do you want to order something?\n', lettered=True)
     if want == 'yes':
+        ID = GetOrderID()
         order_food = (
             input('please choose your meal by entering the serial numbers\n'))
         for content in order_food:
@@ -154,7 +153,7 @@ def Ordering():  # 用户点餐
                 if int(content) <= 7:
                     order_serial_arr.append(int(content))
                 else:
-                    print('OUT OF RANGE')
+                    print(f'{content} IS OUT OF RANGE')
         for i in order_serial_arr:
             order_food_arr.append(menu[i - 1][0])
         print('please check the orders:')
@@ -165,12 +164,10 @@ def Ordering():  # 用户点餐
             else:
                 update_dic(order_instant_dic, food, 1)
         ppt.pprint(order_instant_dic)
-        change = pyip.inputMenu(
-            ['yes', 'no'], 'Do you want to change anything?\n', lettered=True)
+        change = pyip.inputMenu(['yes', 'no'], 'Do you want to change anything?\n', lettered=True)
         while is_change:
             if change == 'yes':
-                how_change = pyip.inputMenu(
-                    ['add', 'reduce'], 'Add food or reduce food?\n', lettered=True)
+                how_change = pyip.inputMenu(['add', 'reduce'],'Add food or reduce food?\n', lettered=True)
                 if how_change == 'add':
                     change_serial = (
                         input('Please enter the additions here:'))
@@ -179,28 +176,27 @@ def Ordering():  # 用户点餐
                         if content.isnumeric():
                             if int(content) <= 7:
                                 order_serial_arr.append(int(content))
-                                print('___', content, 'is added')
+                                print(f'___{content} is added')
                             else:
-                                print('OUT OF RANGE')
+                                print(f"___{content} IS OUT OF RANGE")
                     for i in order_serial_arr:
                         order_food_arr.append(menu[i-1][0])
                 elif how_change == 'reduce':
                     change_serial = (
-                        input('Please enter the serial number of the reduces here:'))
+                        input( 'Please enter the serial number of the reduces here:'))
                     for content in change_serial:
                         if int(content) not in order_serial_arr:
-                            print('___', content, 'is not in the list')
+                            print(f'___{content} is not in the list')
                         else:
                             order_food_arr = []
                             if content.isnumeric():
                                 if int(content) <= 7:
                                     order_serial_arr.remove(int(content))
-                                    print('___', content, 'is removed')
+                                    print(f'___{content} is removed')
                                     for i in order_serial_arr:
                                         order_food_arr.append(menu[i - 1][0])
-                                        print('order_food_arr')
                                 else:
-                                    print('OUT OF RANGE')
+                                    print(f'___{content} IS OUT OF RANGE')
                 else:
                     print('Error exists')
                 print('The updated food list is:')
@@ -214,14 +210,14 @@ def Ordering():  # 用户点餐
             want_change = pyip.inputMenu(['yes', 'no'], 'No change?\n')
             if want_change == 'no':
                 is_change = False
-            elif want_change == "yes":
+            elif want_change=="yes":
                 change = "yes"
         print('Total price is: $', '%.2f' %
               round(Cut_in(order_serial_arr, ID), 2))
     else:
         print('Thank you for using the system')
     update_dic(order_dic, ID, order_food_arr)
-
+    get_txtFile(ID)
 
 def Transfer_to_Ready(order_id):  # 制作完成，通知取餐
     if Preparing_list.search(order_id) == True:
@@ -232,21 +228,14 @@ def Transfer_to_Ready(order_id):  # 制作完成，通知取餐
         print('This ID is not in the Preparing_list')
 
 
-def add_Order(order):
-    with open('Order.dat', 'rb+') as fp:
-        pickle.dump(order, fp)
-        
-
 def main():
     print('The food in processing:')
     Preparing_list.print_list()
     print('The food is ready:')
     Show_Ready_list()
-    user_type = pyip.inputMenu(
-        ['worker', 'customer'], 'Hello, you are?\n', lettered=True)
+    user_type = pyip.inputMenu(['worker', 'customer'], 'Hello, you are?\n', lettered=True)
     if user_type == 'customer':
         Ordering()
-        main()
     elif user_type == 'worker':
         print('The pick-up code in processing is:')
         ppt.pprint(order_dic)
@@ -255,9 +244,41 @@ def main():
         del order_dic[ID]
         print('The updated pick-up code in processing is:')
         ppt.pprint(order_dic)
-        main()
-    else:
-        main()
+        delete_txtFile(ID)
+
+# 把取餐码存在文件里 文件需要更新（插队）
+def get_txtFile(orderID):
+    fp = open('OrderID.txt', 'a')
+    fp.write(str(orderID))
+    fp.write("\n")
+    fp.close()
+    print(fp)
+
+def delete_txtFile(orderID):
+    fp = open('OrderID.txt', 'r+')
+    arr = []
+    for i in fp:
+        arr.append(str(i))
+    arr.remove(orderID)
+    for i in arr:
+        fp.write(i)
+    fp.close()
+
+def get_OrderDat(order):
+    with open('Order.dat', 'rb+') as fp:
+        pickle.dump(order, fp)
 
 
 main()
+
+
+""""
+问题：
+更新的txt file的调用和亿些细节
+用file就可以不用无限循环了，所以出现了以下问题：
+-->get_orderID error: 这个每次运行的时候都需要实时更新。需要先check文件里的到哪个号了。105-108 & 148
+-->order_dic: 这个每次运行的时候都需要实时更新。我是想在adt里找内容 打印出来 就不要这个dictionary了
+dat的调用和删除内容， 你可以写一下（luna上面的一个class有四个内容要存一下，现有的好像还少两个）
+写完之后，我可以写hash algorithm， 还有一些整理。
+executable file是什么
+"""
