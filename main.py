@@ -82,9 +82,10 @@ class Preparing:
 
 Preparing_list = Preparing()
 Ready_list = []
-Order_dic = {}       #是不是不需要了, 毕竟都在file里面了
+Order_dic = {}  # 是不是不需要了, 毕竟都在file里面了
 OrderID = 0000
-Order_count=0
+Order_count = 0
+temp = []
 menu = [['Hamburger', 20],
         ['Milk Tea', 25],
         ['Cola', 8],
@@ -253,20 +254,25 @@ def delete_txtFile(orderID):
     fp.close()
 
 
-def get_OrderDat(order):
+def add_OrderDat(order):
     global Order_count
     with open('Order.dat', 'rb+') as fp:
         pickle.dump(order, fp)
-    Order_count+=1
+    Order_count += 1
+
 
 def remove_OrderDat(ID):
-    global Order_count
+    global Order_count, temp
     with open('Order.dat', 'rb+') as fp:
         for i in range(Order_count):
-            data=pickle.load(fp)
-            if data.OrderID==ID:
-                return
-        return  
+            data = pickle.load(fp)
+            if data.OrderID != ID:
+                temp.append(data)
+    fp = open('Order.dat', 'w')
+    fp.close()
+    with open('Order.dat', 'rb+') as fp:
+        for i in range(len(temp)):
+            pickle.dump(temp[i], fp)
 
 
 def main():
