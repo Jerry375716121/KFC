@@ -1,5 +1,6 @@
 import pprint as ppt
 import pyinputplus as pyip
+import pickle
 
 
 class Order:
@@ -230,6 +231,11 @@ def Transfer_to_Ready(order_id):  # 制作完成，通知取餐
     else:
         print('This ID is not in the Preparing_list')
 
+
+def add_Order(order):
+    with open('Order.dat', 'rb+') as fp:
+        pickle.dump(order, fp)
+        
 
 def main():
     print('The food in processing:')
