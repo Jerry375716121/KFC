@@ -258,7 +258,9 @@ def get_OrderDat(order):
 
 
 def remove_OrderDat(order):
-    return
+    with open('Order.dat', 'rb+') as fp:
+
+        return  
 
 
 def main():
