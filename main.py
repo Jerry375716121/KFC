@@ -82,8 +82,9 @@ class Preparing:
 
 Preparing_list = Preparing()
 Ready_list = []
-order_dic = {}
+Order_dic = {}       #是不是不需要了, 毕竟都在file里面了
 OrderID = 0000
+Order_count=0
 menu = [['Hamburger', 20],
         ['Milk Tea', 25],
         ['Cola', 8],
@@ -219,7 +220,7 @@ def Ordering():  # 用户点餐
               round(Cut_in(order_serial_arr, ID), 2))
     else:
         print('Thank you for using the system')
-    update_dic(order_dic, ID, order_food_arr)
+    update_dic(Order_dic, ID, order_food_arr)
     get_txtFile(ID)
 
 
@@ -253,12 +254,17 @@ def delete_txtFile(orderID):
 
 
 def get_OrderDat(order):
+    global Order_count
     with open('Order.dat', 'rb+') as fp:
         pickle.dump(order, fp)
+    Order_count+=1
 
-
-def remove_OrderDat(order):
+def remove_OrderDat(ID):
+    global Order_count
     with open('Order.dat', 'rb+') as fp:
+        for i in range(Order_count):
+            data=pickle.load(fp)
+            if data.OrderID==ID:
 
         return  
 
@@ -274,12 +280,12 @@ def main():
         Ordering()
     elif user_type == 'worker':
         print('The pick-up code in processing is:')
-        ppt.pprint(order_dic)
+        ppt.pprint(Order_dic)
         ID = int(input('Input the order_id that is ready for serve:\n'))
         Transfer_to_Ready(ID)
-        del order_dic[ID]
+        del Order_dic[ID]
         print('The updated pick-up code in processing is:')
-        ppt.pprint(order_dic)
+        ppt.pprint(Order_dic)
         delete_txtFile(ID)
 
 
